@@ -811,13 +811,14 @@
       const identifier = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value;
       const users = getUsers();
-      const user = users[identifier] ||
-        Object.values(users).find(u => u.email && u.email.toLowerCase() === identifier.toLowerCase());
-      if (!user || user.password !== pass) {
+      const found = Object.keys(users).map(k => ({ key: k, user: users[k] }))
+        .find(({ key, user }) => key === identifier ||
+          (user.email && user.email.toLowerCase() === identifier.toLowerCase()));
+      if (!found || found.user.password !== pass) {
         toast('Invalid username/email or password.', true);
         return;
       }
-      store(LS.session, { username: user.username, loginTime: Date.now() });
+      store(LS.session, { username: found.key, loginTime: Date.now() });
       enterPortal();
     }
 
