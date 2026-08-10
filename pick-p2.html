@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2 Orientation Picker</title>
+<style>
+  body { font-family: sans-serif; background: #111; color: #fff; padding: 2rem; }
+  h1 { text-align: center; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 2rem auto; }
+  .card { background: #1c1c1c; border-radius: 12px; padding: 1rem; text-align: center; border: 2px solid #444; }
+  .card.win { border-color: #4dabf7; }
+  .card img { max-width: 100%; max-height: 260px; border-radius: 8px; }
+  .card .label { font-size: 1.3rem; font-weight: 700; margin-top: 0.7rem; }
+  .card .note { color: #aaa; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+  <h1>Which P2 orientation is correct?</h1>
+  <div class="grid">
+    <div class="card">
+      <img src="photo/pick/1_original.jpg" alt="Original portrait">
+      <div class="label">Option 1 - Original portrait</div>
+      <div class="note">720x1280 tall image</div>
+    </div>
+    <div class="card">
+      <img src="photo/pick/2_rot90.jpg" alt="Rotated 90">
+      <div class="label">Option 2 - Rotated 90&deg;</div>
+      <div class="note">1280x720 wide image</div>
+    </div>
+    <div class="card">
+      <img src="photo/pick/3_rot270.jpg" alt="Rotated 270">
+      <div class="label">Option 3 - Rotated 270&deg;</div>
+      <div class="note">1280x720 wide image (other direction)</div>
+    </div>
+  </div>
+  <p style="text-align:center;color:#aaa;">Tell me which option (1, 2, or 3) shows the photo correctly.</p>
+</body>
+</html>
