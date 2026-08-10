@@ -1121,7 +1121,6 @@
       const myB = myBookings();
       const myO = getOrders().filter(o => o.username === u.username);
       const myM = getMessages().filter(m => m.username === u.username);
-
       document.getElementById('statBookings').textContent = myB.length;
       document.getElementById('statPending').textContent = myB.filter(b => b.status === 'pending').length;
       document.getElementById('statOrders').textContent = myO.length;
@@ -1165,15 +1164,23 @@
       ).join('') : '<div class="empty"><span class="big">&#128230;</span>No orders yet. Your bookings will appear here once confirmed.</div>';
 
       const messagesList = document.getElementById('messagesList');
-      messagesList.innerHTML = myM.length ? myM.map(m =>
-        `<div class="item">
+      const inbox = u.username === 'admin'
+        ? getMessages().filter(m => m.username !== 'admin')
+        : myM;
+      const pendingOrderUsers = new Set(getOrders().filter(o => o.status === 'pending').map(o => o.username));
+      messagesList.innerHTML = inbox.length ? inbox.map(m => {
+        const senderName = u.username === 'admin' ? (getUsers()[m.username] ? getUsers()[m.username].name : m.name) : '';
+        const pendingBadge = u.username === 'admin' && pendingOrderUsers.has(m.username)
+          ? '<span class="badge pending">Pending Order</span>' : '';
+        return `<div class="item">
           <div>
-            <div class="item-title">${escapeHtml(m.subject)} <span class="badge delivered">${STATUS[m.status] || m.status}</span></div>
+            <div class="item-title">${escapeHtml(m.subject)} <span class="badge delivered">${STATUS[m.status] || m.status}</span>${pendingBadge}</div>
+            ${senderName ? '<div class="item-sub">From: ' + escapeHtml(senderName) + ' (' + escapeHtml(m.username) + ')</div>' : ''}
             <div class="item-sub">${escapeHtml(m.body)}</div>
             <div class="item-sub">${new Date(m.sent).toLocaleString()}</div>
           </div>
-        </div>`
-      ).join('') : '<div class="empty"><span class="big">&#128172;</span>No messages sent yet.</div>';
+        </div>`;
+      }).join('') : '<div class="empty"><span class="big">&#128172;</span>' + (u.username === 'admin' ? 'No customer messages yet.' : 'No messages sent yet.') + '</div>';
 
       if (u.username === 'admin') renderAdmin();
     }
