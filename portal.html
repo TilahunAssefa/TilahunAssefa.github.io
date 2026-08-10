@@ -922,6 +922,11 @@
     }
 
     function quickBook(service) {
+      if (service === 'Inbox Message') {
+        showPanel('messages');
+        document.querySelector('#panel-messages .card').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
       showPanel('bookings');
       document.getElementById('bkService').value = service;
       document.getElementById('bkId').value = '';
