@@ -500,6 +500,25 @@
 
     .hero h1 { font-size: 3.8rem; margin-bottom: 0.5rem; position: relative; z-index: 1; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.08); color: #fff; }
     .hero h1 span { color: #fff; }
+
+    .title-caret {
+      display: inline-block;
+      width: 4px;
+      height: 0.8em;
+      background: #fff;
+      margin-left: 5px;
+      vertical-align: baseline;
+      animation: caretBlink 0.8s steps(1) infinite;
+    }
+
+    .animate-word {
+      display: inline-block;
+      will-change: opacity, transform;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-word { transition: none; }
+    }
     .hero-role {
       font-size: 1.4rem;
       color: #fff;
@@ -1004,8 +1023,8 @@
       <input type="file" id="heroUpload" accept="image/*" style="display:none;">
     </div>
     <p class="hero-profile-name">Tilisha</p>
-    <h1>Hi, I'm <span>Tilahun Assefa</span></h1>
-    <p class="hero-role"><span class="typewriter" id="typewriterText"></span><span class="typewriter-caret"></span></p>
+    <h1><span id="heroTitleWords"></span><span class="title-caret"></span></h1>
+    <p class="hero-role"><span id="heroRoleWords"></span><span class="typewriter-caret"></span></p>
     <p>I build clean, performant web experiences with a focus on user experience and modern technologies.</p>
     <div class="hero-buttons">
       <a href="#projects" class="btn btn-filled">View Work</a>
@@ -1253,28 +1272,40 @@
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
 
-    (function typewriter() {
-      const el = document.getElementById('typewriterText');
-      const phrases = [
-        'Hardware, Software & Network Installation & Configuration Skills.'
-      ];
-      let p = 0, i = 0, deleting = false;
-      function tick() {
-        const text = phrases[p];
-        if (!deleting) {
-          i++;
-          el.textContent = text.slice(0, i);
-          if (i === text.length) { deleting = true; setTimeout(tick, 2200); return; }
-          setTimeout(tick, 55);
-        } else {
-          i--;
-          el.textContent = text.slice(0, i);
-          if (i === 0) { deleting = false; p = (p + 1) % phrases.length; setTimeout(tick, 300); return; }
-          setTimeout(tick, 25);
-        }
+    function animateWordsLoop(id, text, step) {
+      const container = document.getElementById(id);
+      container.innerHTML = text.split(' ').map(function (w) {
+        return '<span class="animate-word">' + w + '</span> ';
+      }).join('');
+      const words = container.querySelectorAll('.animate-word');
+      function play() {
+        words.forEach(function (w) {
+          w.style.transition = 'none';
+          w.style.opacity = '0';
+          w.style.transform = 'translateY(24px)';
+        });
+        void container.offsetWidth;
+        words.forEach(function (w, i) {
+          w.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          setTimeout(function () {
+            w.style.opacity = '1';
+            w.style.transform = 'translateY(0)';
+          }, i * step);
+        });
+        setTimeout(function () {
+          words.forEach(function (w) {
+            w.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            w.style.opacity = '0';
+            w.style.transform = 'translateY(-14px)';
+          });
+          setTimeout(play, 500);
+        }, (words.length - 1) * step + 600 + 2600);
       }
-      tick();
-    })();
+      play();
+    }
+
+    animateWordsLoop('heroTitleWords', "Hi, I'm Tilahun Assefa", 300);
+    animateWordsLoop('heroRoleWords', 'Hardware, Software & Network Installation & Configuration Skills.', 150);
 
     menuToggle.addEventListener('click', () => {
       menuToggle.classList.toggle('active');
