@@ -509,6 +509,22 @@
       z-index: 1;
       letter-spacing: 1px;
     }
+
+    .typewriter-caret {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background: #fff;
+      margin-left: 3px;
+      vertical-align: text-bottom;
+      animation: caretBlink 0.8s steps(1) infinite;
+    }
+
+    @keyframes caretBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
     .hero p { font-size: 1.15rem; color: #fff; max-width: 550px; margin-bottom: 2rem; position: relative; z-index: 1; line-height: 1.8; }
 
     /* Horizontal Menu */
@@ -989,7 +1005,7 @@
     </div>
     <p class="hero-profile-name">Tilisha</p>
     <h1>Hi, I'm <span>Tilahun Assefa</span></h1>
-    <p class="hero-role">Full-Stack Developer</p>
+    <p class="hero-role"><span class="typewriter" id="typewriterText"></span><span class="typewriter-caret"></span></p>
     <p>I build clean, performant web experiences with a focus on user experience and modern technologies.</p>
     <div class="hero-buttons">
       <a href="#projects" class="btn btn-filled">View Work</a>
@@ -1236,6 +1252,29 @@
   <script>
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
+
+    (function typewriter() {
+      const el = document.getElementById('typewriterText');
+      const phrases = [
+        'Hardware, Software & Network Installation & Configuration Skills.'
+      ];
+      let p = 0, i = 0, deleting = false;
+      function tick() {
+        const text = phrases[p];
+        if (!deleting) {
+          i++;
+          el.textContent = text.slice(0, i);
+          if (i === text.length) { deleting = true; setTimeout(tick, 2200); return; }
+          setTimeout(tick, 55);
+        } else {
+          i--;
+          el.textContent = text.slice(0, i);
+          if (i === 0) { deleting = false; p = (p + 1) % phrases.length; setTimeout(tick, 300); return; }
+          setTimeout(tick, 25);
+        }
+      }
+      tick();
+    })();
 
     menuToggle.addEventListener('click', () => {
       menuToggle.classList.toggle('active');
