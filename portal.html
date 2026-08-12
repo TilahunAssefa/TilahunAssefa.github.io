@@ -763,6 +763,13 @@
       const users = getUsers();
       let changed = false;
 
+      Object.keys(users).forEach(k => {
+        if (users[k].name && users[k].name.toLowerCase() === 'abeba getaye tesfaw') {
+          users[k].name = 'Tilahun Assefa Ayalew';
+          changed = true;
+        }
+      });
+
       if (!users['demo']) {
         users['demo'] = {
           name: 'Demo Customer', email: 'demo@example.com', phone: '+251 900 000 000',
