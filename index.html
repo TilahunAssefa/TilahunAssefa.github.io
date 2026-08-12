@@ -771,6 +771,34 @@
       gap: 2rem;
     }
 
+    .gallery-photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .gallery-photo {
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #c8dff0;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .gallery-photo:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(77, 171, 247, 0.2); }
+
+    .gallery-photo .thumb { height: 200px; }
+
+    .gallery-photo .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .gallery-photo .cap { padding: 1rem 1.2rem; }
+
+    .gallery-photo .cap h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+
+    .gallery-photo .cap p { color: var(--muted); font-size: 0.85rem; }
+
     .service-card {
       background: var(--card);
       padding: 2rem;
@@ -1025,6 +1053,29 @@
           <p>Watch my video tutorials.</p>
         </div>
       </a>
+    </div>
+
+    <div class="gallery-photos">
+      <div class="gallery-photo" data-index="0">
+        <div class="thumb"><img src="photo/Parts of Computer hardware.png" alt="Parts of Computer Hardware"></div>
+        <div class="cap"><h4>Parts of Computer Hardware</h4><p>The main parts of computer hardware.</p></div>
+      </div>
+      <div class="gallery-photo" data-index="1">
+        <div class="thumb"><img src="photo/Main microchip on the motherboard.jpg" alt="Main Microchip on Motherboard"></div>
+        <div class="cap"><h4>Motherboard Microchip</h4><p>The main microchip on the motherboard.</p></div>
+      </div>
+      <div class="gallery-photo" data-index="2">
+        <div class="thumb"><img src="photo/the technician laying CPU in the motherboard socket.jpg" alt="CPU in Motherboard Socket"></div>
+        <div class="cap"><h4>CPU Installation</h4><p>Laying the CPU in the motherboard socket.</p></div>
+      </div>
+      <div class="gallery-photo" data-index="3">
+        <div class="thumb"><img src="photo/Computer technician fixing a network server.jpg" alt="Computer Technician Fixing a Network Server"></div>
+        <div class="cap"><h4>Network Server Fix</h4><p>Computer technician fixing a network server.</p></div>
+      </div>
+      <div class="gallery-photo" data-index="4">
+        <div class="thumb"><img src="photo/server rooms.jpg" alt="Server Rooms"></div>
+        <div class="cap"><h4>Server Rooms</h4><p>A view of the server rooms.</p></div>
+      </div>
     </div>
   </section>
 
@@ -1328,14 +1379,19 @@
       { src: 'photo/Tila pho.jpg', caption: 'Tila' },
       { src: 'photo/p1.jpg', caption: 'P1' },
       { src: 'photo/p2.jpg?v=3', caption: 'P2' },
-      { src: 'photo/expo.jpg', caption: 'Expo' }
+      { src: 'photo/expo.jpg', caption: 'Expo' },
+      { src: 'photo/Parts of Computer hardware.png', caption: 'Parts of Computer Hardware' },
+      { src: 'photo/Main microchip on the motherboard.jpg', caption: 'Main Microchip on Motherboard' },
+      { src: 'photo/the technician laying CPU in the motherboard socket.jpg', caption: 'CPU in Motherboard Socket' },
+      { src: 'photo/Computer technician fixing a network server.jpg', caption: 'Computer Technician Fixing a Network Server' },
+      { src: 'photo/server rooms.jpg', caption: 'Server Rooms' }
     ];
     let currentPhoto = 0;
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
     const lightboxCaption = document.getElementById('lightboxCaption');
 
-    document.querySelectorAll('.gallery-item').forEach(item => {
+    document.querySelectorAll('.gallery-item, .gallery-photo').forEach(item => {
       item.addEventListener('click', () => {
         currentPhoto = parseInt(item.dataset.index);
         lightboxImg.src = galleryPhotos[currentPhoto].src;
